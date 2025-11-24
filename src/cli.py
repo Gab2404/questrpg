@@ -1,3 +1,4 @@
+# src/cli.py
 import typer
 from typing import Dict, List
 
@@ -5,11 +6,12 @@ from player import Player
 from quest_factory import QuestFactory
 from quest_types import CollectQuest, ExplorationQuest, CombatQuest
 from events import EventManager, ConsoleObserver
+from data_store import load_players, save_players
 
 app = typer.Typer()
 
-# --- stockage en mémoire pour la démo ---
-players: Dict[str, Player] = {}
+# --- stockage en mémoire pour la démo (maintenu entre exécutions via data_store) ---
+players: Dict[str, Player] = load_players()
 quests: List[object] = []
 
 # --- système d'événements (Observer) ---
@@ -34,6 +36,7 @@ def create_player(name: str):
         typer.echo("Ce joueur existe déjà.")
         raise typer.Exit(code=1)
     players[name] = Player(name)
+    save_players(players)  # <- persist
     typer.echo("Joueur créé : {0}".format(name))
 
 
@@ -44,7 +47,7 @@ def list_players():
         typer.echo("Aucun joueur.")
         return
     for player in players.values():
-        typer.echo("- {0} (XP={1})".format(player.name, player.xp))
+        typer.echo("- {0} (niveau {1}, XP={2})".format(player.name, player.level, player.xp))
 
 
 @app.command()
@@ -130,6 +133,8 @@ def accept_quest(player_name: str, quest_index: int):
         raise typer.Exit(code=1)
 
     player.accept_quest(quest)
+    # Note: on ne persiste pas les quêtes acceptées (liste d'objets non sérialisée).
+    # Si besoin on peut persister des références légères plus tard.
     typer.echo("{0} a accepté la quête '{1}'.".format(player.name, quest.name))
 
 
@@ -227,6 +232,8 @@ def complete_quest(player_name: str, quest_index: int):
     if player.xp == before_xp:
         typer.echo("La quête n'est pas encore complétée ou déjà résolue.")
     else:
+        # on persiste l'XP / level modifié
+        save_players(players)
         typer.echo(
             "Quête complétée ! Nouveau total d'XP pour {0}: {1}".format(
                 player.name, player.xp
@@ -236,3 +243,51 @@ def complete_quest(player_name: str, quest_index: int):
 
 if __name__ == "__main__":
     app()
+
+@app.command()
+def create_combat_quest(
+    name: str,
+    description: str,
+    enemy_name: str,
+    kills: int,
+    difficulty: int = 2,
+):
+    quest = QuestFactory.create_combat_quest(
+        name=name,
+        description=description,
+        enemy_name=enemy_name,
+        kills=kills,
+        difficulty=difficulty,
+    )
+    attach_event_manager(quest)
+    quests.append(quest)
+    typer.echo(f"Quête de combat créée : {name} ({kills}x {enemy_name})")
+
+@app.command()
+def create_exploration_quest(name: str, description: str, location: str):
+    quest = QuestFactory.create_exploration_quest(
+        name=name, description=description, location=location
+    )
+    attach_event_manager(quest)
+    quests.append(quest)
+    typer.echo(f"Quête d'exploration créée : {name} (lieu: {location})")
+
+@app.command()
+def create_combat_quest(
+    name: str,
+    description: str,
+    enemy_name: str,
+    kills: int,
+    difficulty: int = 2,
+):
+    """Créer une quête de combat."""
+    quest = QuestFactory.create_combat_quest(
+        name=name,
+        description=description,
+        enemy_name=enemy_name,
+        kills=kills,
+        difficulty=difficulty,
+    )
+    attach_event_manager(quest)
+    quests.append(quest)
+    typer.echo(f"Quête de combat créée : {name} ({kills}x {enemy_name})")
