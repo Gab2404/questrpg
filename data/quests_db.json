@@ -60,5 +60,18 @@
         "base_xp": 60,
         "type": "SECONDARY",
         "decorators": []
+    },
+    {
+        "id": 6,
+        "title": "test",
+        "description": "sdfsgfsngyshfengfbsecnjservgbnfyjct,dg",
+        "base_xp": 90,
+        "type": "SECONDARY",
+        "decorators": [
+            {
+                "type": "money_reward",
+                "value": 3000
+            }
+        ]
     }
 ]
