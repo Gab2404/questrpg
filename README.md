@@ -10,10 +10,28 @@ Projet de démonstration du **Design Pattern Decorator** appliqué à un systèm
 - Python 3.8+
 - pip
 
-### Étape unique
+### Étapes
 
+1. **Créer un environnement virtuel**
 ```bash
-pip install -r requirements.txt 
+python -m venv venv
+```
+
+2. **Activer l'environnement virtuel**
+
+Windows :
+```bash
+venv\Scripts\activate
+```
+
+Linux/Mac :
+```bash
+source venv/bin/activate
+```
+
+3. **Installer les dépendances**
+```bash
+pip install -r requirements.txt
 ```
 
 C'est tout ! La structure de dossiers est déjà en place.
@@ -199,35 +217,44 @@ R. Retour
 ## 📁 Structure du Projet
 
 ```
-quest_manager_project/
-├── models/
+QUESTRPG/
+├── cli/
 │   ├── __init__.py
-│   ├── player.py
-│   └── quest_interfaces.py
-├── quests/
-│   ├── __init__.py
-│   ├── base_quest.py
-│   └── quest_factory.py
+│   ├── quest_admin.py
+│   └── quest_manager.py
+│
+├── data/
+│   └── quests_db.json
+│
 ├── decorators/
 │   ├── __init__.py
 │   ├── quest_decorator.py
 │   ├── requirements.py
 │   └── rewards.py
+│
+├── models/
+│   ├── __init__.py
+│   ├── player.py
+│   └── quest_interfaces.py
+│
+├── quests/
+│   ├── __init__.py
+│   ├── base_quest.py
+│   └── quest_factory.py
+│
 ├── storage/
 │   ├── __init__.py
 │   ├── player_storage.py
 │   └── quest_storage.py
-├── cli/
-│   ├── __init__.py
-│   ├── quest_admin.py
-│   └── quest_manager.py
-├── data/
-│   ├── quests_db.json
-│   └── save.json
+│
+├── venv/                    # Environnement virtuel (ignoré par Git)
+│
 ├── .gitignore
 ├── README.md
 └── requirements.txt
 ```
+
+**Note** : Le fichier `save.json` est créé automatiquement dans `data/` lors de la première utilisation.
 
 ---
 
@@ -276,5 +303,3 @@ quest_manager_project/
     "completed_quests": [1, 2, 3]
 }
 ```
-
----
