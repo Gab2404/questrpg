@@ -1,0 +1,35 @@
+{
+  "test": {
+    "username": "test",
+    "hashed_password": "$2b$12$BF4FX9gnd1ENy9JvLGpyMOLT6aUUieIxnCjUIjHXdG/Y6lGUnoAua",
+    "is_admin": true,
+    "name": "Héros",
+    "level": 2,
+    "xp": 0,
+    "money": 1100,
+    "inventory": [
+      "Coupe"
+    ],
+    "spoken_to_npc": true,
+    "completed_quests": [
+      1,
+      2
+    ]
+  },
+  "user": {
+    "username": "user",
+    "hashed_password": "$2b$12$2cG1qh58XHzNqH4vUAQMQuAPMXpxrchG6gRYMUs/S/1DBMphvJC/C",
+    "is_admin": false,
+    "name": "Héros",
+    "level": 3,
+    "xp": 0,
+    "money": 100,
+    "inventory": [],
+    "spoken_to_npc": false,
+    "completed_quests": [
+      1,
+      3,
+      2
+    ]
+  }
+}

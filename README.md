@@ -1,306 +1,152 @@
-# 🎮 Quest Manager - Système de Gestion de Quêtes
+# 🎮 Quest Manager - Application Web
 
-Projet de démonstration du **Design Pattern Decorator** appliqué à un système de quêtes pour jeux vidéo RPG.
+Système de gestion de quêtes pour jeux RPG avec backend FastAPI et frontend web moderne.
 
 ---
 
-## 📋 Installation
+## 🚀 Démarrage Rapide
 
-### Prérequis
-- Python 3.8+
-- pip
-
-### Étapes
-
-1. **Créer un environnement virtuel**
 ```bash
+# 1. Installation Backend
+cd backend
 python -m venv venv
-```
+source venv/bin/activate  # Linux/Mac
+# OU
+venv\Scripts\activate     # Windows
 
-2. **Activer l'environnement virtuel**
-
-Windows :
-```bash
-venv\Scripts\activate
-```
-
-Linux/Mac :
-```bash
-source venv/bin/activate
-```
-
-3. **Installer les dépendances**
-```bash
 pip install -r requirements.txt
+
+# 2. Configuration
+cp .env.example .env
+# Éditez .env et changez SECRET_KEY
+
+# 3. Lancement
+python -m uvicorn app.main:app --reload
 ```
 
-C'est tout ! La structure de dossiers est déjà en place.
+```bash
+# 4. Lancement Frontend (nouveau terminal)
+cd frontend
+python -m http.server 3000
+```
+
+**Accès** : http://localhost:3000
 
 ---
 
-## 💻 Commandes - Interface Joueur
+## 📚 Documentation
 
-### Afficher le statut du joueur
-```bash
-python -m cli.quest_manager status
-```
-Affiche : niveau, XP, argent, inventaire, quêtes complétées
-
-### Lister toutes les quêtes
-```bash
-python -m cli.quest_manager list-quests
-```
-Affiche toutes les quêtes avec leur statut (✅ terminée / 🆕 disponible)
-
-### Parler au PNJ
-```bash
-python -m cli.quest_manager talk-npc
-```
-Simule une conversation avec un PNJ (débloque les quêtes nécessitant une interaction)
-
-### Accomplir une quête
-```bash
-python -m cli.quest_manager do-quest <numéro>
-```
-**Exemple** : `python -m cli.quest_manager do-quest 1`
-
-Tente d'accomplir la quête. Vérifie automatiquement :
-- Si la quête est déjà terminée
-- Si le niveau est suffisant
-- Si le PNJ a été contacté (si requis)
-
-### Modifier le niveau (triche)
-```bash
-python -m cli.quest_manager cheat-level <niveau>
-```
-**Exemple** : `python -m cli.quest_manager cheat-level 10`
-
-### Réinitialiser la sauvegarde
-```bash
-python -m cli.quest_manager reset-save
-```
-Supprime `data/save.json` pour recommencer à zéro
+- **[QUICKSTART.md](QUICKSTART.md)** - Démarrage en 5 minutes ⚡
+- **[README_WEB.md](README_WEB.md)** - Documentation complète 📖
+- **[MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)** - Migration depuis CLI 🔄
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Résolution de problèmes 🔧
+- **[FILES_CHECKLIST.md](FILES_CHECKLIST.md)** - Liste des fichiers 📋
 
 ---
 
-## 🛠️ Commandes - Interface Admin
+## 🎯 Fonctionnalités
 
-### Lister toutes les quêtes
-```bash
-python -m cli.quest_admin list
-```
-Affiche un tableau : ID | Titre | Type | XP
+✅ **Backend FastAPI**
+- API REST complète
+- Authentification JWT
+- Multi-utilisateurs
+- Décorateurs de quêtes (Decorator Pattern)
+- Factory Pattern pour création de quêtes
 
-### Créer une nouvelle quête
-```bash
-python -m cli.quest_admin create
-```
-Mode interactif pour créer une quête :
-1. Titre
-2. Description
-3. XP de base
-4. Type (Principale/Secondaire)
-5. Configuration des décorateurs (optionnel)
+✅ **Frontend Web**
+- Dashboard joueur
+- Dashboard admin
+- Animations et notifications
+- Design moderne et responsive
 
-### Modifier une quête existante
-```bash
-python -m cli.quest_admin modify <id>
-```
-**Exemple** : `python -m cli.quest_admin modify 1`
-
-Menu interactif pour modifier :
-- Titre
-- Description
-- XP de base
-- Type
-- Décorateurs (conditions/récompenses)
-
-### Supprimer une quête
-```bash
-python -m cli.quest_admin delete <id>
-```
-**Exemple** : `python -m cli.quest_admin delete 5`
-
-### Réparer les IDs
-```bash
-python -m cli.quest_admin fix-ids
-```
-Réattribue des IDs séquentiels (1, 2, 3...) en cas de doublons
+✅ **Système de Quêtes**
+- Quêtes principales et secondaires
+- Conditions (niveau, PNJ)
+- Récompenses (XP, argent, objets)
+- Progression et inventaire
 
 ---
 
-## 🎨 Types de Décorateurs
+## 🏗️ Architecture
 
-### Conditions (Requirements)
-- **level_req** : Niveau minimum requis
-- **npc_req** : Avoir parlé à un PNJ
-
-### Récompenses (Rewards)
-- **money_reward** : Pièces d'or
-- **item_reward** : Objet ajouté à l'inventaire
-
----
-
-## 📚 Exemples d'Utilisation
-
-### Scénario 1 : Commencer le jeu
-
-```bash
-# Voir le statut initial
-python -m cli.quest_manager status
-
-# Lister les quêtes
-python -m cli.quest_manager list-quests
-
-# Tenter la quête 1 (niveau 1 requis)
-python -m cli.quest_manager do-quest 1
 ```
-
-### Scénario 2 : Quête avec condition PNJ
-
-```bash
-# Tenter une quête nécessitant un PNJ
-python -m cli.quest_manager do-quest 2
-# ❌ Vous devez d'abord parler au PNJ !
-
-# Parler au PNJ
-python -m cli.quest_manager talk-npc
-
-# Réessayer
-python -m cli.quest_manager do-quest 2
-# ✅ Succès !
-```
-
-### Scénario 3 : Quête de haut niveau
-
-```bash
-# Tenter une quête niveau 10
-python -m cli.quest_manager do-quest 3
-# ❌ Niveau insuffisant. Requis: 10, Actuel: 1
-
-# Tricher pour passer niveau 10
-python -m cli.quest_manager cheat-level 10
-
-# Réessayer
-python -m cli.quest_manager do-quest 3
-# ✅ Succès ! + récompenses
-```
-
-### Scénario 4 : Créer une quête complète
-
-```bash
-# Lancer la création
-python -m cli.quest_admin create
-
-# Suivre les instructions :
-📝 Titre de la quête: Tuer 10 Gobelins
-📖 Description: Éliminez 10 gobelins dans la forêt
-⭐ XP de base: 100
-🎯 Quête Principale ? [Y/n]: y
-⚙️  Voulez-vous configurer les conditions/récompenses maintenant ? [Y/n]: y
-
-# Dans le menu décorateurs :
-A. Ajouter un décorateur
-1. Condition : Niveau requis
-Niveau minimum: 5
-
-A. Ajouter un décorateur
-3. Récompense : Argent
-Montant en pièces: 500
-
-R. Retour
-6. Sauvegarder et Quitter
+quest-manager-web/
+├── backend/          # API FastAPI
+│   ├── app/
+│   │   ├── routers/  # Routes API
+│   │   ├── models/   # Modèles de données
+│   │   ├── decorators/ # Pattern Decorator
+│   │   └── quests/   # Logique quêtes
+│   └── data/         # Fichiers JSON
+│
+└── frontend/         # Application web
+    ├── *.html        # Pages
+    ├── css/          # Styles
+    └── js/           # Logic JavaScript
 ```
 
 ---
 
-## 📁 Structure du Projet
+## 🛠️ Technologies
 
-```
-QUESTRPG/
-├── cli/
-│   ├── __init__.py
-│   ├── quest_admin.py
-│   └── quest_manager.py
-│
-├── data/
-│   └── quests_db.json
-│
-├── decorators/
-│   ├── __init__.py
-│   ├── quest_decorator.py
-│   ├── requirements.py
-│   └── rewards.py
-│
-├── models/
-│   ├── __init__.py
-│   ├── player.py
-│   └── quest_interfaces.py
-│
-├── quests/
-│   ├── __init__.py
-│   ├── base_quest.py
-│   └── quest_factory.py
-│
-├── storage/
-│   ├── __init__.py
-│   ├── player_storage.py
-│   └── quest_storage.py
-│
-├── venv/                    # Environnement virtuel (ignoré par Git)
-│
-├── .gitignore
-├── README.md
-└── requirements.txt
-```
+**Backend**
+- FastAPI
+- Python 3.8+
+- JWT (python-jose)
+- Bcrypt (passlib)
 
-**Note** : Le fichier `save.json` est créé automatiquement dans `data/` lors de la première utilisation.
+**Frontend**
+- HTML5 / CSS3
+- JavaScript (Vanilla)
+- Fetch API
 
 ---
 
-## 📄 Format JSON
+## 📦 Scripts Utiles
 
-### Structure d'une quête
+```bash
+# Démarrer tout (Linux/Mac)
+./start.sh
 
-```json
-{
-    "id": 1,
-    "title": "Tuer 10 Gobelins",
-    "description": "Éliminez 10 gobelins dans la forêt sombre",
-    "base_xp": 100,
-    "type": "PRIMARY",
-    "decorators": [
-        {
-            "type": "level_req",
-            "value": 5
-        },
-        {
-            "type": "npc_req",
-            "value": "Garde du village"
-        },
-        {
-            "type": "money_reward",
-            "value": 500
-        },
-        {
-            "type": "item_reward",
-            "value": "Épée en fer"
-        }
-    ]
-}
+# Démarrer tout (Windows)
+start.bat
+
+# Arrêter (Linux/Mac)
+./stop.sh
+
+# Arrêter (Windows)
+stop.bat
 ```
 
-### Structure de la sauvegarde
+---
 
-```json
-{
-    "name": "Héros",
-    "level": 5,
-    "xp": 250,
-    "money": 1500,
-    "inventory": ["Épée en fer", "Potion de vie"],
-    "spoken_to_npc": true,
-    "completed_quests": [1, 2, 3]
-}
-```
+## 🧪 Test Rapide
 
+1. **Créer un compte admin** : http://localhost:3000/register.html
+2. **Créer une quête** : Dashboard admin → "Créer une quête"
+3. **Créer un compte joueur**
+4. **Accomplir la quête** → 🎊 Animation de succès !
+
+---
+
+## 📊 API Documentation
+
+Une fois le backend lancé : **http://localhost:8000/docs**
+
+---
+
+## 🔐 Sécurité
+
+- ⚠️ Changez `SECRET_KEY` dans `.env`
+- ⚠️ Ne commitez JAMAIS `.env`
+- ⚠️ En production : `DEBUG=False`
+
+---
+
+## 🐛 Problèmes ?
+
+Consultez [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
+
+---
+
+**🎮 Bonne gestion de quêtes !**

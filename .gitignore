@@ -1,17 +1,245 @@
-# Python
+# ============================================
+# .gitignore - Quest Manager Web
+# ============================================
+
+# ============================================
+# PYTHON
+# ============================================
+
+# Environnement virtuel
+venv/
+env/
+ENV/
+.venv/
+*.pyc
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
+
+# Distribution / packaging
 .Python
-venv/
-env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# IDE
-.vscode/
-.idea/
-*.swp
+# PyInstaller
+*.manifest
+*.spec
 
-# Data
-data/save.json
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.env.local
+.env.*.local
+env.bak/
+venv.bak/
+
+# ============================================
+# DONNÉES SENSIBLES (TRÈS IMPORTANT)
+# ============================================
+
+# Fichiers de configuration avec secrets
+backend/.env
+backend/*.env
+*.env
+
+# Base de données de production (décommenter si nécessaire)
+# backend/data/users.json
+# backend/data/quests_db.json
+
+# Backups
+backend/data/*.backup
+backend/data/*_backup_*.json
+backend/data/save_*.json
+
+# Logs
 *.log
+logs/
+*.log.*
+
+# ============================================
+# IDE / ÉDITEURS
+# ============================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# Eclipse
+.project
+.pydevproject
+.settings/
+
+# ============================================
+# SYSTÈME D'EXPLOITATION
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# FICHIERS TEMPORAIRES
+# ============================================
+
+# Fichiers temporaires généraux
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.*.swp
+
+# Cache
+.cache/
+*.cache
+
+# ============================================
+# NODE.JS (si vous ajoutez npm plus tard)
+# ============================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# ============================================
+# DOCUMENTATION
+# ============================================
+
+# Documentation générée
+docs/_build/
+site/
+
+# ============================================
+# DIVERS
+# ============================================
+
+# Fichiers de test
+test_*.py
+*_test.py
+tests/temp/
+
+# Fichiers de debug
+debug.log
+debug/
+
+# Fichiers de dump
+*.dump
+*.sql
+*.sqlite
+*.db
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Certificats (si vous en ajoutez)
+*.pem
+*.key
+*.crt
+*.cert
+
+# ============================================
+# QUEST MANAGER SPÉCIFIQUE
+# ============================================
+
+# Données de développement (décommenter si besoin)
+# backend/data/dev_*.json
+
+# Scripts de test personnels
+backend/test_scripts/
+backend/scripts/temp/
+
+# Sauvegardes automatiques
+backend/data/auto_backup_*.json
+
+# Fichiers de configuration locaux
+backend/config.local.py
+frontend/config.local.js
+
+# Uploads (si vous ajoutez cette fonctionnalité)
+backend/uploads/
+frontend/uploads/
+
+# ============================================
+# NOTES IMPORTANTES
+# ============================================
+
+# Si vous voulez versionner vos quêtes et utilisateurs de test,
+# créez des fichiers séparés :
+# - backend/data/quests_sample.json (à versionner)
+# - backend/data/users_sample.json (à versionner)
+# Et excluez les vrais fichiers :
+# - backend/data/quests_db.json (à exclure)
+# - backend/data/users.json (à exclure)

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Quest Manager</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div class="container" style="max-width: 500px; padding-top: 5rem;">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">🎮 Quest Manager</h1>
+            </div>
+            
+            <h2 style="text-align: center; margin-bottom: 2rem;">Connexion</h2>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" required autocomplete="current-password">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    Se connecter
+                </button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 1.5rem;">
+                Pas encore de compte ? 
+                <a href="register.html" style="color: var(--primary); font-weight: 500;">S'inscrire</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

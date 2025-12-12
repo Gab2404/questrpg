@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Manager - Accueil</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div class="container" style="text-align: center; padding-top: 5rem;">
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+            <h1 style="font-size: 3rem; margin-bottom: 1rem;">🎮 Quest Manager</h1>
+            <p style="font-size: 1.25rem; color: #666; margin-bottom: 3rem;">
+                Système de gestion de quêtes pour jeux RPG
+            </p>
+
+            <div style="display: flex; gap: 2rem; justify-content: center; margin-bottom: 3rem;">
+                <div style="flex: 1; padding: 2rem; background: #f8f9fa; border-radius: 8px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                    <h3 style="margin-bottom: 0.5rem;">Joueurs</h3>
+                    <p style="color: #666; font-size: 0.875rem;">
+                        Accomplissez des quêtes, gagnez de l'XP et des récompenses
+                    </p>
+                </div>
+
+                <div style="flex: 1; padding: 2rem; background: #f8f9fa; border-radius: 8px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚙️</div>
+                    <h3 style="margin-bottom: 0.5rem;">Administrateurs</h3>
+                    <p style="color: #666; font-size: 0.875rem;">
+                        Créez et gérez des quêtes avec conditions et récompenses
+                    </p>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="login.html" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.125rem;">
+                    Se connecter
+                </a>
+                <a href="register.html" class="btn btn-success" style="padding: 1rem 2rem; font-size: 1.125rem;">
+                    S'inscrire
+                </a>
+            </div>
+
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+                <h3 style="margin-bottom: 1rem;">✨ Fonctionnalités</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: left;">
+                    <div>
+                        <strong>🎯 Quêtes variées</strong>
+                        <p style="color: #666; font-size: 0.875rem; margin-top: 0.25rem;">
+                            Principales et secondaires avec conditions
+                        </p>
+                    </div>
+                    <div>
+                        <strong>⭐ Système d'XP</strong>
+                        <p style="color: #666; font-size: 0.875rem; margin-top: 0.25rem;">
+                            Gagnez de l'expérience et montez en niveau
+                        </p>
+                    </div>
+                    <div>
+                        <strong>💰 Récompenses</strong>
+                        <p style="color: #666; font-size: 0.875rem; margin-top: 0.25rem;">
+                            Argent et objets à collectionner
+                        </p>
+                    </div>
+                    <div>
+                        <strong>🔧 Design Patterns</strong>
+                        <p style="color: #666; font-size: 0.875rem; margin-top: 0.25rem;">
+                            Decorator, Factory, Observer
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Redirection automatique si déjà connecté
+        const token = localStorage.getItem('token');
+        const user = localStorage.getItem('user');
+        
+        if (token && user) {
+            const userData = JSON.parse(user);
+            if (userData.is_admin) {
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                window.location.href = 'player-dashboard.html';
+            }
+        }
+    </script>
+</body>
+</html>

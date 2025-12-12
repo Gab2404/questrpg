@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Quest Manager</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div class="container" style="max-width: 500px; padding-top: 5rem;">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">🎮 Quest Manager</h1>
+            </div>
+            
+            <h2 style="text-align: center; margin-bottom: 2rem;">Inscription</h2>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" required minlength="3" autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" required minlength="6" autocomplete="new-password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmer le mot de passe</label>
+                    <input type="password" id="confirmPassword" required minlength="6" autocomplete="new-password">
+                </div>
+                
+                <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="checkbox" id="isAdmin" style="width: auto;">
+                    <label for="isAdmin" style="margin: 0; cursor: pointer;">Compte Administrateur</label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    S'inscrire
+                </button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 1.5rem;">
+                Déjà un compte ? 
+                <a href="login.html" style="color: var(--primary); font-weight: 500;">Se connecter</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

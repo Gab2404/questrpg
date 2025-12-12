@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "title": "dfgd",
+    "description": "dghd",
+    "base_xp": 12,
+    "type": "PRIMARY",
+    "decorators": []
+  },
+  {
+    "id": 2,
+    "title": "dfgdfg",
+    "description": "dfgdfgd",
+    "base_xp": 11212,
+    "type": "PRIMARY",
+    "decorators": [
+      {
+        "type": "level_req",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "RGDG",
+    "description": "DRGDG",
+    "base_xp": 1213,
+    "type": "PRIMARY",
+    "decorators": [
+      {
+        "type": "npc_req",
+        "value": "ZERZER"
+      }
+    ]
+  }
+]

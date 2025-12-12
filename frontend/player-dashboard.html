@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Joueur - Quest Manager</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="player-dashboard.html"><strong>🎮 Quest Manager</strong></a></li>
+            <li><a href="player-dashboard.html">Mes Quêtes</a></li>
+            <li class="nav-right">
+                <button id="refreshBtn" class="btn btn-secondary" style="padding: 0.5rem 1rem;">🔄 Actualiser</button>
+            </li>
+            <li>
+                <a href="#" id="logoutBtn" style="color: #e74c3c;">Déconnexion</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Statut du Joueur -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">👤 Statut du Joueur</h2>
+                <button id="talkNPCBtn" class="btn btn-primary">💬 Parler au PNJ</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Nom</div>
+                    <div class="stat-value" id="playerName">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Niveau</div>
+                    <div class="stat-value" id="playerLevel">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">XP</div>
+                    <div class="stat-value" id="playerXP">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Argent</div>
+                    <div class="stat-value" id="playerMoney">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Quêtes terminées</div>
+                    <div class="stat-value" id="completedQuestsCount">-</div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem;">🎒 Inventaire</h3>
+            <div id="inventory" class="inventory-grid"></div>
+        </div>
+
+        <!-- Liste des Quêtes -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">📜 Quêtes Disponibles</h2>
+            </div>
+            
+            <div id="questsList" class="quest-list">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Chargement des quêtes...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/player.js"></script>
+</body>
+</html>
