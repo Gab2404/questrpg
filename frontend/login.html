@@ -8,34 +8,38 @@
     <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
-    <div class="container" style="max-width: 500px; padding-top: 5rem;">
-        <div class="card">
-            <div class="card-header">
-                <h1 class="card-title">🎮 Quest Manager</h1>
+    <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 2rem;">
+        <div style="width: 100%; max-width: 450px;">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h1 style="font-size: 3rem; margin-bottom: 1rem;">🎮</h1>
+                <h2 style="font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">Quest Manager</h2>
+                <p style="color: #888;">Système de gestion de quêtes pour jeux RPG</p>
             </div>
-            
-            <h2 style="text-align: center; margin-bottom: 2rem;">Connexion</h2>
-            
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="username">Nom d'utilisateur</label>
-                    <input type="text" id="username" required autocomplete="username">
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Mot de passe</label>
-                    <input type="password" id="password" required autocomplete="current-password">
-                </div>
-                
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    Se connecter
-                </button>
-            </form>
-            
-            <p style="text-align: center; margin-top: 1.5rem;">
-                Pas encore de compte ? 
-                <a href="register.html" style="color: var(--primary); font-weight: 500;">S'inscrire</a>
-            </p>
+
+            <div class="card" style="background: var(--dark-light); border-radius: 12px; padding: 2rem;">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: #fff; font-size: 1.5rem;">Connexion</h3>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Nom d'utilisateur</label>
+                        <input type="text" id="username" required autocomplete="username" placeholder="Entrez votre nom d'utilisateur">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" required autocomplete="current-password" placeholder="Entrez votre mot de passe">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                        Se connecter
+                    </button>
+                </form>
+
+                <p style="text-align: center; margin-top: 1.5rem; color: #888;">
+                    Pas encore de compte ? 
+                    <a href="register.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">S'inscrire</a>
+                </p>
+            </div>
         </div>
     </div>
 

@@ -1,17 +1,34 @@
 [
   {
     "id": 1,
-    "title": "dfgd",
-    "description": "dghd",
-    "base_xp": 12,
+    "title": "dfgdfg",
+    "description": "dfgdfgd",
+    "base_xp": 11213,
+    "type": "PRIMARY",
+    "decorators": [
+      {
+        "type": "level_req",
+        "value": 1
+      },
+      {
+        "type": "money_reward",
+        "value": 1000
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "dgdfg",
+    "description": "dgdgg",
+    "base_xp": 4545,
     "type": "PRIMARY",
     "decorators": []
   },
   {
-    "id": 2,
-    "title": "dfgdfg",
-    "description": "dfgdfgd",
-    "base_xp": 11212,
+    "id": 3,
+    "title": "DFGDGF",
+    "description": "DFGDFGD",
+    "base_xp": 2434,
     "type": "PRIMARY",
     "decorators": [
       {
@@ -21,16 +38,11 @@
     ]
   },
   {
-    "id": 3,
-    "title": "RGDG",
-    "description": "DRGDG",
-    "base_xp": 1213,
+    "id": 4,
+    "title": "DFBDH",
+    "description": "CGHFTGH",
+    "base_xp": 12,
     "type": "PRIMARY",
-    "decorators": [
-      {
-        "type": "npc_req",
-        "value": "ZERZER"
-      }
-    ]
+    "decorators": []
   }
 ]

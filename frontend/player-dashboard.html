@@ -11,7 +11,7 @@
     <nav>
         <ul>
             <li><a href="player-dashboard.html"><strong>🎮 Quest Manager</strong></a></li>
-            <li><a href="player-dashboard.html">Mes Quêtes</a></li>
+            <li><a href="player-dashboard.html" style="color: var(--primary);">Mes Quêtes</a></li>
             <li class="nav-right">
                 <button id="refreshBtn" class="btn btn-secondary" style="padding: 0.5rem 1rem;">🔄 Actualiser</button>
             </li>
@@ -32,7 +32,7 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-label">Nom</div>
-                    <div class="stat-value" id="playerName">-</div>
+                    <div class="stat-value" id="playerName" style="font-size: 1.5rem;">-</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Niveau</div>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Argent</div>
-                    <div class="stat-value" id="playerMoney">-</div>
+                    <div class="stat-value" id="playerMoney">- 💰</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Quêtes terminées</div>
@@ -52,8 +52,13 @@
                 </div>
             </div>
 
-            <h3 style="margin-top: 2rem; margin-bottom: 1rem;">🎒 Inventaire</h3>
-            <div id="inventory" class="inventory-grid"></div>
+            <h3 style="padding: 0 2rem; margin: 2rem 0 1rem; color: #fff; font-size: 1.25rem;">🎒 Inventaire</h3>
+            <div id="inventory" class="inventory-grid">
+                <div class="inventory-item">
+                    <div style="font-size: 2rem;">📦</div>
+                    <div>Chargement...</div>
+                </div>
+            </div>
         </div>
 
         <!-- Liste des Quêtes -->

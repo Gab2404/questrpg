@@ -20,23 +20,41 @@ function displayAdminQuests(quests) {
         return;
     }
 
-    tbody.innerHTML = quests.map(quest => `
-        <tr>
+    tbody.innerHTML = '';  // Vider d'abord
+    
+    quests.forEach(quest => {
+        const typeLabel = quest.type === 'PRIMARY' ? 'Principale' : 'Secondaire';
+        const badgeClass = quest.type === 'PRIMARY' ? 'badge-primary' : 'badge-success';
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
             <td>${quest.id}</td>
-            <td><strong>${quest.title}</strong></td>
-            <td>${quest.type}</td>
-            <td>${quest.base_xp}</td>
+            <td>${quest.title}</td>
+            <td><span class="badge ${badgeClass}">${typeLabel}</span></td>
+            <td>${quest.base_xp} XP</td>
             <td>${quest.decorators.length}</td>
             <td>
-                <button class="btn btn-primary" onclick="editQuest(${quest.id})" style="margin-right: 0.5rem; padding: 0.5rem 1rem;">
-                    ✏️ Modifier
-                </button>
-                <button class="btn btn-danger" onclick="deleteQuest(${quest.id}, '${quest.title}')" style="padding: 0.5rem 1rem;">
-                    🗑️ Supprimer
-                </button>
+                <button class="btn-icon btn-edit" data-id="${quest.id}" title="Modifier">✏️</button>
+                <button class="btn-icon btn-delete" data-id="${quest.id}" data-title="${quest.title}" title="Supprimer">🗑️</button>
             </td>
-        </tr>
-    `).join('');
+        `;
+        
+        // Attacher les événements directement
+        const editBtn = row.querySelector('.btn-edit');
+        const deleteBtn = row.querySelector('.btn-delete');
+        
+        editBtn.addEventListener('click', () => {
+            console.log('Edit clicked for quest', quest.id);
+            editQuest(quest.id);
+        });
+        
+        deleteBtn.addEventListener('click', () => {
+            console.log('Delete clicked for quest', quest.id, quest.title);
+            deleteQuest(quest.id, quest.title);
+        });
+        
+        tbody.appendChild(row);
+    });
 }
 
 async function loadAdminStats() {
@@ -44,8 +62,24 @@ async function loadAdminStats() {
         const stats = await api.getAdminStats();
         document.getElementById('totalUsers').textContent = stats.total_users;
         document.getElementById('totalQuests').textContent = stats.total_quests;
+        
+        // Afficher les stats "Terminées" et "En cours" si disponibles
+        if (stats.total_completed !== undefined) {
+            document.getElementById('totalCompleted').textContent = stats.total_completed;
+        } else {
+            document.getElementById('totalCompleted').textContent = '0';
+        }
+        
+        if (stats.total_in_progress !== undefined) {
+            document.getElementById('totalInProgress').textContent = stats.total_in_progress;
+        } else {
+            document.getElementById('totalInProgress').textContent = '0';
+        }
     } catch (error) {
         console.error('Erreur stats:', error);
+        // Valeurs par défaut en cas d'erreur
+        document.getElementById('totalCompleted').textContent = '0';
+        document.getElementById('totalInProgress').textContent = '0';
     }
 }
 
@@ -55,7 +89,6 @@ function showCreateQuestModal() {
     document.getElementById('decoratorsList').innerHTML = '<p style="color:#999;">Aucun décorateur configuré</p>';
     document.getElementById('decoratorsData').value = '[]';
     
-    // ✅ CORRECTION : Cacher le formulaire et retirer required
     const addDecForm = document.getElementById('addDecoratorForm');
     addDecForm.classList.add('hidden');
     document.getElementById('decoratorValue').removeAttribute('required');
@@ -84,7 +117,6 @@ async function editQuest(questId) {
         
         document.getElementById('decoratorsData').value = JSON.stringify(quest.decorators);
         
-        // ✅ CORRECTION : Cacher le formulaire et retirer required
         const addDecForm = document.getElementById('addDecoratorForm');
         addDecForm.classList.add('hidden');
         document.getElementById('decoratorValue').removeAttribute('required');
@@ -98,17 +130,23 @@ async function editQuest(questId) {
 }
 
 async function deleteQuest(questId, title) {
+    console.log('deleteQuest called with:', questId, title);
+    
     if (!confirm(`Voulez-vous vraiment supprimer la quête "${title}" ?`)) {
+        console.log('Deletion cancelled by user');
         return;
     }
 
     try {
+        console.log('Calling API to delete quest', questId);
         await api.deleteQuest(questId);
+        console.log('Quest deleted successfully');
         notify.success('Quête supprimée');
         await loadAdminQuests();
+        await loadAdminStats();
     } catch (error) {
+        console.error('Error deleting quest:', error);
         notify.error('Erreur lors de la suppression');
-        console.error(error);
     }
 }
 
@@ -128,9 +166,12 @@ function displayDecorators(decorators) {
         else if (dec.type === 'item_reward') label = `Objet: ${dec.value}`;
         
         return `
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: #f8f9fa; border-radius: 4px; margin-bottom: 0.5rem;">
-                <span>${label}</span>
-                <button class="btn btn-danger" onclick="removeDecorator(${index})" style="padding: 0.25rem 0.75rem;">×</button>
+            <div class="decorator-item">
+                <div class="decorator-info">
+                    <div class="decorator-type">${dec.type === 'level_req' || dec.type === 'npc_req' ? 'Condition' : 'Récompense'}</div>
+                    <div class="decorator-value">${label}</div>
+                </div>
+                <button class="btn-icon" onclick="removeDecorator(${index})" title="Supprimer">🗑️</button>
             </div>
         `;
     }).join('');
@@ -148,7 +189,6 @@ function showAddDecoratorForm() {
     const addDecForm = document.getElementById('addDecoratorForm');
     addDecForm.classList.remove('hidden');
     
-    // ✅ CORRECTION : Ajouter required quand on affiche le formulaire
     document.getElementById('decoratorValue').setAttribute('required', 'required');
     
     updateDecoratorValueField();
@@ -208,7 +248,6 @@ function addDecorator() {
     
     displayDecorators(decorators);
     
-    // ✅ CORRECTION : Cacher et retirer required après ajout
     document.getElementById('addDecoratorForm').classList.add('hidden');
     document.getElementById('decoratorValue').removeAttribute('required');
     document.getElementById('decoratorValue').value = '';
@@ -232,7 +271,7 @@ async function saveQuest(event) {
         decorators
     };
 
-    console.log('Sending quest data:', questData); // ✅ Debug
+    console.log('Sending quest data:', questData);
 
     try {
         if (currentEditingQuest) {
@@ -245,6 +284,7 @@ async function saveQuest(event) {
 
         closeModal();
         await loadAdminQuests();
+        await loadAdminStats();
     } catch (error) {
         notify.error('Erreur lors de la sauvegarde');
         console.error(error);
@@ -254,7 +294,6 @@ async function saveQuest(event) {
 function closeModal() {
     document.getElementById('questModal').classList.remove('active');
     
-    // ✅ CORRECTION : Nettoyer complètement le formulaire
     const addDecForm = document.getElementById('addDecoratorForm');
     addDecForm.classList.add('hidden');
     document.getElementById('decoratorValue').removeAttribute('required');
@@ -270,6 +309,7 @@ async function fixIds() {
         const result = await api.fixQuestIds();
         notify.success(result.message);
         await loadAdminQuests();
+        await loadAdminStats();
     } catch (error) {
         notify.error('Erreur lors de la réparation des IDs');
         console.error(error);
@@ -278,6 +318,8 @@ async function fixIds() {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('Admin.js loaded!'); // ✅ Test de chargement
+    
     if (!auth.requireAdmin()) return;
 
     await loadAdminQuests();
@@ -290,7 +332,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('addDecoratorBtn').addEventListener('click', showAddDecoratorForm);
     document.getElementById('saveDecoratorBtn').addEventListener('click', addDecorator);
     document.getElementById('cancelDecoratorBtn').addEventListener('click', () => {
-        // ✅ CORRECTION : Retirer required lors de l'annulation
         document.getElementById('addDecoratorForm').classList.add('hidden');
         document.getElementById('decoratorValue').removeAttribute('required');
         document.getElementById('decoratorValue').value = '';
@@ -303,4 +344,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     document.getElementById('decoratorType').addEventListener('change', updateDecoratorValueField);
+    
+    console.log('Admin.js initialized!'); // ✅ Test d'initialisation
 });

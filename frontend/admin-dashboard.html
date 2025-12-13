@@ -10,17 +10,18 @@
 <body>
     <nav>
         <ul>
-            <li><a href="admin-dashboard.html"><strong>⚙️ Admin Panel</strong></a></li>
+            <li><a href="admin-dashboard.html"><strong>⚙️ Quest Manager</strong></a></li>
+            <li><a href="admin-dashboard.html" style="color: #ffd800;">Admin Panel</a></li>
             <li><a href="player-dashboard.html">Vue Joueur</a></li>
-            <li class="nav-right">
-                <a href="#" id="logoutBtn" style="color: #e74c3c;">Déconnexion</a>
+            <li>
+                <button class="nav-btn" id="logoutBtn">Déconnexion</button>
             </li>
         </ul>
     </nav>
 
     <div class="container">
         <!-- Statistiques -->
-        <div class="stats-grid" style="margin-bottom: 2rem;">
+        <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-label">Utilisateurs</div>
                 <div class="stat-value" id="totalUsers">-</div>
@@ -29,13 +30,21 @@
                 <div class="stat-label">Quêtes</div>
                 <div class="stat-value" id="totalQuests">-</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-label">Terminées</div>
+                <div class="stat-value" id="totalCompleted">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">En cours</div>
+                <div class="stat-value" id="totalInProgress">-</div>
+            </div>
         </div>
 
         <!-- Gestion des Quêtes -->
         <div class="card">
             <div class="card-header">
                 <h2 class="card-title">📋 Gestion des Quêtes</h2>
-                <div>
+                <div style="display: flex; gap: 1rem;">
                     <button id="createQuestBtn" class="btn btn-success">➕ Créer une quête</button>
                     <button id="fixIdsBtn" class="btn btn-warning">🔧 Réparer les IDs</button>
                 </div>
@@ -54,7 +63,7 @@
                 </thead>
                 <tbody id="questsTableBody">
                     <tr>
-                        <td colspan="6" style="text-align: center;">
+                        <td colspan="6">
                             <div class="loading">
                                 <div class="spinner"></div>
                                 <p>Chargement...</p>
@@ -71,73 +80,82 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="modalTitle">Créer une quête</h2>
-                <span class="modal-close" id="closeModalBtn">×</span>
+                <button class="modal-close" id="closeModalBtn">×</button>
             </div>
 
-            <form id="questForm">
-                <div class="form-group">
-                    <label for="questTitle">Titre</label>
-                    <input type="text" id="questTitle" required>
-                </div>
+            <div style="padding: 1.5rem 2rem 2rem;">
+                <form id="questForm">
+                    <div class="modal-section">
+                        <div class="modal-section-title">📝 Informations générales</div>
+                        
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                            <div class="form-group" style="margin: 0;">
+                                <label for="questTitle">Titre</label>
+                                <input type="text" id="questTitle" required placeholder="Ex: La quête du dragon">
+                            </div>
 
-                <div class="form-group">
-                    <label for="questDescription">Description</label>
-                    <textarea id="questDescription" rows="3" required></textarea>
-                </div>
+                            <div class="form-group" style="margin: 0;">
+                                <label for="questType">Type</label>
+                                <select id="questType" required>
+                                    <option value="PRIMARY">Principale</option>
+                                    <option value="SECONDARY">Secondaire</option>
+                                </select>
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label for="questXP">XP de base</label>
-                    <input type="number" id="questXP" required min="1">
-                </div>
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label for="questDescription">Description</label>
+                            <textarea id="questDescription" rows="3" required placeholder="Décrivez l'objectif de la quête..."></textarea>
+                        </div>
 
-                <div class="form-group">
-                    <label for="questType">Type</label>
-                    <select id="questType" required>
-                        <option value="PRIMARY">Principale</option>
-                        <option value="SECONDARY">Secondaire</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Décorateurs (Conditions & Récompenses)</label>
-                    <div id="decoratorsList" style="margin-bottom: 1rem;">
-                        <p style="color:#999;">Aucun décorateur configuré</p>
+                        <div class="form-group" style="margin: 0;">
+                            <label for="questXP">Points d'expérience (XP)</label>
+                            <input type="number" id="questXP" required min="1" placeholder="100" style="max-width: 200px;">
+                        </div>
                     </div>
-                    <button type="button" class="btn btn-secondary" id="addDecoratorBtn">
-                        ➕ Ajouter un décorateur
-                    </button>
-                    <input type="hidden" id="decoratorsData" value="[]">
-                </div>
 
-                <!-- Formulaire d'ajout de décorateur -->
-                <div id="addDecoratorForm" class="hidden" style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-                    <div class="form-group">
-                        <label for="decoratorType">Type</label>
-                        <select id="decoratorType">
-                            <option value="level_req">Niveau requis</option>
-                            <option value="npc_req">PNJ requis</option>
-                            <option value="money_reward">Récompense argent</option>
-                            <option value="item_reward">Récompense objet</option>
-                        </select>
+                    <div class="modal-section">
+                        <div class="modal-section-title">🎯 Conditions & Récompenses</div>
+                        <div id="decoratorsList" style="margin-bottom: 1rem;">
+                            <p style="color:#999;">Aucun décorateur configuré</p>
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="addDecoratorBtn">
+                            ➕ Ajouter un décorateur
+                        </button>
+                        <input type="hidden" id="decoratorsData" value="[]">
                     </div>
-                    <div class="form-group">
-                        <label for="decoratorValue">Valeur</label>
-                        <!-- ✅ CORRECTION : Enlever required car le champ peut être caché -->
-                        <input type="text" id="decoratorValue" placeholder="Entrez une valeur">
-                    </div>
-                    <button type="button" class="btn btn-success" id="saveDecoratorBtn">Ajouter</button>
-                    <button type="button" class="btn btn-danger" id="cancelDecoratorBtn">Annuler</button>
-                </div>
 
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">
-                        💾 Sauvegarder
-                    </button>
-                    <button type="button" class="btn btn-danger" onclick="closeModal()">
-                        ❌ Annuler
-                    </button>
-                </div>
-            </form>
+                    <!-- Formulaire d'ajout de décorateur -->
+                    <div id="addDecoratorForm" class="hidden modal-section">
+                        <div class="form-group">
+                            <label for="decoratorType">Type</label>
+                            <select id="decoratorType">
+                                <option value="level_req">Niveau requis</option>
+                                <option value="npc_req">PNJ requis</option>
+                                <option value="money_reward">Récompense argent</option>
+                                <option value="item_reward">Récompense objet</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="decoratorValue">Valeur</label>
+                            <input type="text" id="decoratorValue" placeholder="Entrez une valeur">
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <button type="button" class="btn btn-success" id="saveDecoratorBtn">Ajouter</button>
+                            <button type="button" class="btn btn-danger" id="cancelDecoratorBtn">Annuler</button>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">
+                            💾 Sauvegarder
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="closeModal()">
+                            ✖ Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

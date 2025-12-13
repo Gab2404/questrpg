@@ -173,7 +173,7 @@ async def fix_quest_ids(current_user: User = Depends(get_current_admin)):
 
 @router.get("/stats", response_model=dict)
 async def get_stats(current_user: User = Depends(get_current_admin)):
-    """Statistiques globales"""
+    """Statistiques globales avec quêtes terminées et en cours"""
     
     users = db.get_all_users()
     quests = db.get_all_quests()
@@ -181,18 +181,32 @@ async def get_stats(current_user: User = Depends(get_current_admin)):
     total_users = len(users)
     total_quests = len(quests)
     
+    # ✅ CORRECTION : Calculer les quêtes terminées et en cours
+    total_completed = 0
+    total_in_progress = 0
+    
     # Statistiques par utilisateur
     user_stats = []
     for username, user_data in users.items():
         if not user_data.get("is_admin", False):
+            completed = user_data.get("completed_quests", [])
+            num_completed = len(completed)
+            total_completed += num_completed
+            
+            # En cours = total de quêtes - quêtes complétées
+            in_progress = total_quests - num_completed
+            total_in_progress += max(0, in_progress)
+            
             user_stats.append({
                 "username": username,
                 "level": user_data.get("level", 1),
-                "completed_quests": len(user_data.get("completed_quests", []))
+                "completed_quests": num_completed
             })
     
     return {
         "total_users": total_users,
         "total_quests": total_quests,
+        "total_completed": total_completed,      # ✅ Nouveau
+        "total_in_progress": total_in_progress,  # ✅ Nouveau
         "users": user_stats
     }
