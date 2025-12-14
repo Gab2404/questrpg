@@ -1,35 +1,103 @@
 [
   {
     "id": 1,
-    "title": "La quete du dragon",
-    "description": "efserufrfbgscrsdjvcfsdbfygsrnsdfsbvdvrdrgfvsdcjdrrvbtdcrfggcdngfdgcvdh",
-    "base_xp": 1200,
-    "type": "PRIMARY",
+    "title": "Entraînement Matinal",
+    "description": "Prouvez votre valeur en frappant le mannequin d'entraînement dans la cour de la caserne.",
+    "base_xp": 50,
+    "type": "SECONDARY",
     "decorators": [
       {
-        "type": "level_req",
-        "value": 5
+        "type": "money_reward",
+        "value": 15
       },
       {
-        "type": "money_reward",
-        "value": 1000
+        "type": "item_reward",
+        "value": "Potion"
       }
     ]
   },
   {
     "id": 2,
-    "title": "dfbdbd",
-    "description": "fdbhdn",
-    "base_xp": 345,
+    "title": "La Garde de Nuit",
+    "description": "Des bandits rôdent près des portes de la ville. Assurez la sécurité pendant la nuit.",
+    "base_xp": 100,
     "type": "PRIMARY",
-    "decorators": []
+    "decorators": [
+      {
+        "type": "money_reward",
+        "value": 50
+      },
+      {
+        "type": "item_reward",
+        "value": "Bouclier"
+      }
+    ]
   },
   {
     "id": 3,
-    "title": "DFGDGD",
-    "description": "DFGDGDG",
-    "base_xp": 34535,
+    "title": "Savoir Perdu",
+    "description": "L'archiviste a perdu un document précieux dans les ruines. Retrouvez-le avant qu'il ne tombe en poussière.",
+    "base_xp": 150,
+    "type": "SECONDARY",
+    "decorators": [
+      {
+        "type": "level_req",
+        "value": 2
+      },
+      {
+        "type": "money_reward",
+        "value": 100
+      },
+      {
+        "type": "item_reward",
+        "value": "Parchemin"
+      },
+      {
+        "type": "npc_req",
+        "value": "Ancien du village"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Le Chevalier Noir",
+    "description": "Un guerrier corrompu bloque le pont principal. Battez-le en duel singulier pour libérer le passage.",
+    "base_xp": 300,
     "type": "PRIMARY",
-    "decorators": []
+    "decorators": [
+      {
+        "type": "level_req",
+        "value": 3
+      },
+      {
+        "type": "money_reward",
+        "value": 500
+      },
+      {
+        "type": "item_reward",
+        "value": "Épée"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Le Grand Tournoi",
+    "description": "Seuls les plus grands héros peuvent participer. Triomphez dans l'arène et devenez une légende !",
+    "base_xp": 1000,
+    "type": "PRIMARY",
+    "decorators": [
+      {
+        "type": "npc_req",
+        "value": "Roi Arthur"
+      },
+      {
+        "type": "money_reward",
+        "value": 2000
+      },
+      {
+        "type": "item_reward",
+        "value": "Coupe"
+      }
+    ]
   }
 ]

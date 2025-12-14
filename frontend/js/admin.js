@@ -2,6 +2,15 @@
 
 let currentEditingQuest = null;
 
+// ⚔️ NOUVEAU : Liste des objets pour le menu déroulant
+const PREDEFINED_ITEMS = {
+    "Épée": "⚔️",
+    "Bouclier": "🛡️",
+    "Potion": "🧪",
+    "Parchemin": "📜",
+    "Coupe": "🏆"
+};
+
 async function loadAdminQuests() {
     try {
         const quests = await api.getAllQuests();
@@ -91,6 +100,8 @@ function showCreateQuestModal() {
     
     const addDecForm = document.getElementById('addDecoratorForm');
     addDecForm.classList.add('hidden');
+    // On s'assure que le champ est bien un input text par défaut
+    updateDecoratorValueField();
     document.getElementById('decoratorValue').removeAttribute('required');
     
     currentEditingQuest = null;
@@ -163,7 +174,11 @@ function displayDecorators(decorators) {
         if (dec.type === 'level_req') label = `Niveau ${dec.value} requis`;
         else if (dec.type === 'npc_req') label = `PNJ requis: ${dec.value}`;
         else if (dec.type === 'money_reward') label = `+${dec.value} pièces`;
-        else if (dec.type === 'item_reward') label = `Objet: ${dec.value}`;
+        // MODIFIÉ : Ajout de l'emoji si c'est un objet
+        else if (dec.type === 'item_reward') {
+            const emoji = PREDEFINED_ITEMS[dec.value] || '🎁';
+            label = `Objet: ${emoji} ${dec.value}`;
+        }
         
         return `
             <div class="decorator-item">
@@ -194,29 +209,78 @@ function showAddDecoratorForm() {
     updateDecoratorValueField();
 }
 
+// 🔥 FONCTION MODIFIÉE : Gère le switch Input <-> Select
 function updateDecoratorValueField() {
     const type = document.getElementById('decoratorType').value;
-    const valueContainer = document.getElementById('decoratorValue').parentElement;
-    const input = document.getElementById('decoratorValue');
+    const oldElement = document.getElementById('decoratorValue');
+    const parent = oldElement.parentElement;
+    const label = parent.querySelector('label');
     
-    if (type === 'npc_req') {
-        input.type = 'text';
-        input.placeholder = 'Nom du PNJ (ex: Ancien du village)';
-        valueContainer.querySelector('label').textContent = 'Nom du PNJ';
-    } else if (type === 'level_req' || type === 'money_reward') {
-        input.type = 'number';
-        input.placeholder = 'Entrez un nombre';
-        valueContainer.querySelector('label').textContent = 'Valeur';
+    // On garde les classes CSS pour ne pas casser le style
+    const cssClass = oldElement.className || 'form-input'; // Si pas de classe, fallback
+
+    let newElement;
+
+    if (type === 'item_reward') {
+        // Cas Objet : On veut un SELECT
+        if (oldElement.tagName === 'SELECT') return; // Déjà un select, on ne fait rien
+
+        newElement = document.createElement('select');
+        newElement.id = 'decoratorValue';
+        newElement.className = cssClass; // Garde le style
+        newElement.required = true;
+
+        // Option par défaut
+        const defaultOpt = document.createElement('option');
+        defaultOpt.value = "";
+        defaultOpt.textContent = "-- Choisir un objet --";
+        newElement.appendChild(defaultOpt);
+
+        // Ajouter nos 5 objets
+        for (const [name, emoji] of Object.entries(PREDEFINED_ITEMS)) {
+            const opt = document.createElement('option');
+            opt.value = name;
+            opt.textContent = `${emoji} ${name}`;
+            newElement.appendChild(opt);
+        }
+
+        label.textContent = "Objet à donner";
+
     } else {
-        input.type = 'text';
-        input.placeholder = 'Entrez le nom de l\'objet';
-        valueContainer.querySelector('label').textContent = 'Nom de l\'objet';
+        // Cas Normal : On veut un INPUT
+        // Si c'était déjà un input, on le garde mais on change juste le type
+        if (oldElement.tagName === 'INPUT') {
+            newElement = oldElement; // On garde le même élément
+        } else {
+            // C'était un select, on recrée un input
+            newElement = document.createElement('input');
+            newElement.id = 'decoratorValue';
+            newElement.className = cssClass;
+            newElement.required = true;
+        }
+
+        // Configuration du type d'input
+        if (type === 'npc_req') {
+            newElement.type = 'text';
+            newElement.placeholder = 'Nom du PNJ (ex: Ancien du village)';
+            label.textContent = 'Nom du PNJ';
+        } else if (type === 'level_req' || type === 'money_reward') {
+            newElement.type = 'number';
+            newElement.placeholder = 'Entrez un nombre';
+            label.textContent = 'Valeur';
+        }
+    }
+
+    // Remplacement dans le DOM si nécessaire
+    if (oldElement !== newElement) {
+        oldElement.replaceWith(newElement);
     }
 }
 
 function addDecorator() {
     const type = document.getElementById('decoratorType').value;
-    const value = document.getElementById('decoratorValue').value;
+    const valueInput = document.getElementById('decoratorValue');
+    const value = valueInput.value;
 
     if (!value) {
         notify.warning('Veuillez remplir la valeur');
@@ -235,6 +299,7 @@ function addDecorator() {
     
     let parsedValue = value;
     
+    // Conversion en nombre si nécessaire
     if (type === 'level_req' || type === 'money_reward') {
         parsedValue = parseInt(value);
         if (isNaN(parsedValue)) {
@@ -250,7 +315,7 @@ function addDecorator() {
     
     document.getElementById('addDecoratorForm').classList.add('hidden');
     document.getElementById('decoratorValue').removeAttribute('required');
-    document.getElementById('decoratorValue').value = '';
+    valueInput.value = '';
 }
 
 async function saveQuest(event) {

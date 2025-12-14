@@ -1,5 +1,14 @@
 // Player Dashboard Logic - VERSION ORIGINALE (ne pas modifier)
 
+// ⚔️ MAP DES EMOJIS POUR L'AFFICHAGE
+const ITEM_ICONS = {
+    "Épée": "⚔️",
+    "Bouclier": "🛡️",
+    "Potion": "🧪",
+    "Parchemin": "📜",
+    "Coupe": "🏆"
+};
+
 async function loadPlayerStatus() {
     try {
         const status = await api.getPlayerStatus();
@@ -18,17 +27,21 @@ function displayPlayerStatus(status) {
     document.getElementById('playerMoney').textContent = status.money;
     document.getElementById('completedQuestsCount').textContent = status.completed_quests.length;
 
-    // Inventory
+    // Inventory avec Emojis
     const inventoryContainer = document.getElementById('inventory');
     if (status.inventory.length === 0) {
         inventoryContainer.innerHTML = '<p style="text-align:center; color:#999;">Inventaire vide</p>';
     } else {
-        inventoryContainer.innerHTML = status.inventory.map(item => `
+        inventoryContainer.innerHTML = status.inventory.map(item => {
+            // Cherche l'emoji, sinon met un sac par défaut
+            const icon = ITEM_ICONS[item] || '🎒';
+            return `
             <div class="inventory-item">
-                <div style="font-size: 2rem;">🎒</div>
+                <div style="font-size: 2rem;">${icon}</div>
                 <div>${item}</div>
             </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
     // NPC Status
@@ -105,7 +118,10 @@ function displayQuests(quests) {
         const rewards = [];
         quest.decorators.forEach(dec => {
             if (dec.type === 'money_reward') rewards.push(`<span class="decorator-value">💰 ${dec.value} pièces</span>`);
-            if (dec.type === 'item_reward') rewards.push(`<span class="decorator-value">🎁 ${dec.value}</span>`);
+            if (dec.type === 'item_reward') {
+                 const icon = ITEM_ICONS[dec.value] || '🎁';
+                 rewards.push(`<span class="decorator-value">${icon} ${dec.value}</span>`);
+            }
         });
         if (rewards.length > 0) {
             rewardsHTML = `
@@ -167,9 +183,12 @@ function showQuestCompleteAnimation(questTitle, rewards) {
     const rewardsHTML = [];
     if (rewards.xp) rewardsHTML.push(`<div class="reward-item">⭐ +${rewards.xp} XP</div>`);
     if (rewards.money) rewardsHTML.push(`<div class="reward-item">💰 +${rewards.money} pièces</div>`);
+    
+    // Affichage des objets avec icônes
     if (rewards.items) {
         rewards.items.forEach(item => {
-            rewardsHTML.push(`<div class="reward-item">🎁 ${item}</div>`);
+             const icon = ITEM_ICONS[item] || '🎁';
+            rewardsHTML.push(`<div class="reward-item">${icon} ${item}</div>`);
         });
     }
     if (rewards.leveled_up) {
