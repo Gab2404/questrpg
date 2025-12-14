@@ -3,7 +3,7 @@
     "id": 1,
     "title": "Entraînement Matinal",
     "description": "Prouvez votre valeur en frappant le mannequin d'entraînement dans la cour de la caserne.",
-    "base_xp": 50,
+    "base_xp": 100,
     "type": "SECONDARY",
     "decorators": [
       {
@@ -20,7 +20,7 @@
     "id": 2,
     "title": "La Garde de Nuit",
     "description": "Des bandits rôdent près des portes de la ville. Assurez la sécurité pendant la nuit.",
-    "base_xp": 100,
+    "base_xp": 200,
     "type": "PRIMARY",
     "decorators": [
       {
@@ -37,7 +37,7 @@
     "id": 3,
     "title": "Savoir Perdu",
     "description": "L'archiviste a perdu un document précieux dans les ruines. Retrouvez-le avant qu'il ne tombe en poussière.",
-    "base_xp": 150,
+    "base_xp": 300,
     "type": "SECONDARY",
     "decorators": [
       {
@@ -62,7 +62,7 @@
     "id": 4,
     "title": "Le Chevalier Noir",
     "description": "Un guerrier corrompu bloque le pont principal. Battez-le en duel singulier pour libérer le passage.",
-    "base_xp": 300,
+    "base_xp": 500,
     "type": "PRIMARY",
     "decorators": [
       {
@@ -97,6 +97,10 @@
       {
         "type": "item_reward",
         "value": "Coupe"
+      },
+      {
+        "type": "level_req",
+        "value": 4
       }
     ]
   }

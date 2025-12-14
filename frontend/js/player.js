@@ -33,7 +33,6 @@ function displayPlayerStatus(status) {
         inventoryContainer.innerHTML = '<p style="text-align:center; color:#999;">Inventaire vide</p>';
     } else {
         inventoryContainer.innerHTML = status.inventory.map(item => {
-            // Cherche l'emoji, sinon met un sac par défaut
             const icon = ITEM_ICONS[item] || '🎒';
             return `
             <div class="inventory-item">
@@ -44,12 +43,21 @@ function displayPlayerStatus(status) {
         }).join('');
     }
 
-    // NPC Status
+    // --- MISE À JOUR DU BOUTON PNJ (CORRIGÉ) ---
     const npcBtn = document.getElementById('talkNPCBtn');
+    
     if (status.spoken_to_npc) {
+        // Cas : Déjà parlé (Vert)
         npcBtn.textContent = '✓ PNJ contacté';
         npcBtn.classList.add('btn-success');
         npcBtn.classList.remove('btn-primary');
+        npcBtn.disabled = true; // On bloque le clic pour éviter le spam
+    } else {
+        // Cas : Reset / Pas encore parlé (Bleu) - C'est ici que le reset visuel se fait
+        npcBtn.textContent = '💬 Parler au PNJ';
+        npcBtn.classList.remove('btn-success');
+        npcBtn.classList.add('btn-primary');
+        npcBtn.disabled = false; // On réactive le bouton
     }
 }
 

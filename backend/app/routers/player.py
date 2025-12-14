@@ -112,15 +112,12 @@ async def complete_quest(quest_id: int, current_user: User = Depends(get_current
     # Compléter la quête
     xp_result = current_user.add_xp(quest_data["base_xp"])
     
-    # Ajouter les récompenses des décorateurs
+    # Ajouter les récompenses
     rewards = {
         "xp": quest_data["base_xp"],
         "leveled_up": xp_result["leveled_up"],
         "new_level": xp_result["new_level"]
     }
-    
-    # Vérifier si la quête nécessite le PNJ AVANT de donner les récompenses
-    has_npc_requirement = any(dec["type"] == "npc_req" for dec in quest_data.get("decorators", []))
     
     for dec in quest_data.get("decorators", []):
         if dec["type"] == "money_reward":
@@ -134,12 +131,12 @@ async def complete_quest(quest_id: int, current_user: User = Depends(get_current
     current_user.completed_quests.append(quest_id)
     logger.info(f"Quest {quest_id} completed! New completed_quests: {current_user.completed_quests}")
     
-    # Reset le statut PNJ APRÈS avoir ajouté la quête aux complétées
-    if has_npc_requirement:
-        current_user.spoken_to_npc = False
-        rewards["npc_reset"] = True
+    # 🔥 RESET INCONDITIONNEL DU PNJ
+    # On force le joueur à retourner voir le PNJ après CHAQUE quête
+    current_user.spoken_to_npc = False
+    rewards["npc_reset"] = True
     
-    # Sauvegarder (avec le reset PNJ inclus)
+    # Sauvegarder
     db.update_user(current_user.username, current_user.to_dict())
     
     return QuestResult(
@@ -152,7 +149,7 @@ async def complete_quest(quest_id: int, current_user: User = Depends(get_current
             xp=current_user.xp,
             money=current_user.money,
             inventory=current_user.inventory,
-            spoken_to_npc=current_user.spoken_to_npc,
+            spoken_to_npc=current_user.spoken_to_npc,  # Sera False ici
             completed_quests=current_user.completed_quests
         )
     )
