@@ -147,12 +147,21 @@ async def delete_quest(
 ):
     """Supprime une quête"""
     
+    # ✅ FIX : Nettoyer l'ID de toutes les listes completed_quests
     success = db.delete_quest(quest_id)
     if not success:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Quête #{quest_id} introuvable"
         )
+    
+    # ✅ NOUVEAU : Retirer cet ID de tous les joueurs
+    users = db.get_all_users()
+    for username, user_data in users.items():
+        if quest_id in user_data.get("completed_quests", []):
+            user_data["completed_quests"].remove(quest_id)
+            db.update_user(username, user_data)
+            logger.info(f"Removed quest {quest_id} from user {username}'s completed list")
 
 @router.post("/quests/fix-ids", response_model=dict)
 async def fix_quest_ids(current_user: User = Depends(get_current_admin)):
@@ -160,15 +169,35 @@ async def fix_quest_ids(current_user: User = Depends(get_current_admin)):
     
     quests = db.get_all_quests()
     
-    # Réattribuer les IDs
+    # ✅ AMÉLIORATION : Mapper les anciens IDs vers les nouveaux
+    id_mapping = {}
     for i, quest in enumerate(quests, start=1):
-        quest["id"] = i
+        old_id = quest["id"]
+        new_id = i
+        id_mapping[old_id] = new_id
+        quest["id"] = new_id
     
     db.save_quests(quests)
     
+    # ✅ NOUVEAU : Mettre à jour les IDs dans les completed_quests de tous les joueurs
+    users = db.get_all_users()
+    for username, user_data in users.items():
+        old_completed = user_data.get("completed_quests", [])
+        new_completed = []
+        
+        for old_quest_id in old_completed:
+            if old_quest_id in id_mapping:
+                new_completed.append(id_mapping[old_quest_id])
+            # Si l'ancien ID n'existe plus dans les quêtes, on le supprime
+        
+        user_data["completed_quests"] = new_completed
+        db.update_user(username, user_data)
+        logger.info(f"Updated completed_quests for user {username}: {old_completed} -> {new_completed}")
+    
     return {
         "success": True,
-        "message": f"{len(quests)} quête(s) renumérotée(s)"
+        "message": f"{len(quests)} quête(s) renumérotée(s)",
+        "id_mapping": id_mapping
     }
 
 @router.get("/stats", response_model=dict)
@@ -209,4 +238,36 @@ async def get_stats(current_user: User = Depends(get_current_admin)):
         "total_completed": total_completed,      # ✅ Nouveau
         "total_in_progress": total_in_progress,  # ✅ Nouveau
         "users": user_stats
+    }
+
+# ✅ NOUVELLE ROUTE : Nettoyer les IDs orphelins
+@router.post("/clean-orphan-quest-ids", response_model=dict)
+async def clean_orphan_quest_ids(current_user: User = Depends(get_current_admin)):
+    """
+    Nettoie les IDs de quêtes qui n'existent plus dans completed_quests
+    Utile après avoir supprimé des quêtes
+    """
+    
+    # Récupérer tous les IDs valides
+    quests = db.get_all_quests()
+    valid_ids = {q["id"] for q in quests}
+    
+    users = db.get_all_users()
+    cleaned_count = 0
+    
+    for username, user_data in users.items():
+        old_completed = user_data.get("completed_quests", [])
+        new_completed = [qid for qid in old_completed if qid in valid_ids]
+        
+        if len(new_completed) != len(old_completed):
+            removed = set(old_completed) - set(new_completed)
+            user_data["completed_quests"] = new_completed
+            db.update_user(username, user_data)
+            cleaned_count += len(removed)
+            logger.info(f"Cleaned {len(removed)} orphan IDs from {username}: {removed}")
+    
+    return {
+        "success": True,
+        "message": f"{cleaned_count} ID(s) orphelin(s) nettoyé(s)",
+        "valid_quest_ids": list(valid_ids)
     }

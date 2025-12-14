@@ -5,7 +5,7 @@ from app.decorators.requirements import LevelRequirementDecorator, NPCInteractio
 from app.decorators.rewards import MoneyRewardDecorator, ItemRewardDecorator
 
 class QuestFactory:
-    """Factory pour créer des quêtes depuis le JSON (conservé avec adaptations)"""
+    """Factory pour créer des quêtes depuis le JSON"""
     
     @staticmethod
     def create_quest_from_dict(q_data: Dict) -> IQuest:
@@ -18,8 +18,25 @@ class QuestFactory:
             is_primary=(q_data["type"] == "PRIMARY")
         )
         
+        # Récupérer les décorateurs
+        decorators = list(q_data.get("decorators", []))  # Copie pour modification
+        
+        # ✅ FIX : Les quêtes SECONDARY doivent avoir une condition
+        if q_data["type"] == "SECONDARY":
+            has_requirement = any(
+                dec["type"] in ["level_req", "npc_req"] 
+                for dec in decorators
+            )
+            
+            # Si aucune condition, ajouter NPC par défaut
+            if not has_requirement:
+                decorators.insert(0, {
+                    "type": "npc_req",
+                    "value": "Guide"
+                })
+        
         # Application des décorateurs dans l'ordre
-        for dec in q_data.get("decorators", []):
+        for dec in decorators:
             dtype, val = dec["type"], dec["value"]
             
             if dtype == "level_req":

@@ -1,14 +1,14 @@
 [
   {
     "id": 1,
-    "title": "dfgdfg",
-    "description": "dfgdfgd",
-    "base_xp": 11213,
+    "title": "La quete du dragon",
+    "description": "efserufrfbgscrsdjvcfsdbfygsrnsdfsbvdvrdrgfvsdcjdrrvbtdcrfggcdngfdgcvdh",
+    "base_xp": 1200,
     "type": "PRIMARY",
     "decorators": [
       {
         "type": "level_req",
-        "value": 1
+        "value": 5
       },
       {
         "type": "money_reward",
@@ -18,30 +18,17 @@
   },
   {
     "id": 2,
-    "title": "dgdfg",
-    "description": "dgdgg",
-    "base_xp": 4545,
+    "title": "dfbdbd",
+    "description": "fdbhdn",
+    "base_xp": 345,
     "type": "PRIMARY",
     "decorators": []
   },
   {
     "id": 3,
-    "title": "DFGDGF",
-    "description": "DFGDFGD",
-    "base_xp": 2434,
-    "type": "PRIMARY",
-    "decorators": [
-      {
-        "type": "level_req",
-        "value": 1
-      }
-    ]
-  },
-  {
-    "id": 4,
-    "title": "DFBDH",
-    "description": "CGHFTGH",
-    "base_xp": 12,
+    "title": "DFGDGD",
+    "description": "DFGDGDG",
+    "base_xp": 34535,
     "type": "PRIMARY",
     "decorators": []
   }

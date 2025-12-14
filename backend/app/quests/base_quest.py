@@ -1,7 +1,7 @@
 from app.models.quest_interfaces import IQuest
 
 class BaseQuest(IQuest):
-    """Implémentation de base d'une quête (conservée de votre code)"""
+    """Implémentation de base d'une quête"""
     
     def __init__(self, quest_id: int, title: str, description: str, base_xp: int, is_primary: bool = True):
         self.quest_id = quest_id
@@ -22,19 +22,25 @@ class BaseQuest(IQuest):
 
     def can_start(self, player) -> bool:
         """
-        ✅ CORRECTION: Retourne False si déjà complétée, True sinon
-        Les décorateurs vont surcharger cette méthode pour ajouter leurs propres conditions
+        ✅ CORRECTION CRITIQUE
+        Vérifie UNIQUEMENT si la quête n'est pas déjà complétée.
+        Les décorateurs ajouteront leurs propres conditions en SURCOUCHE.
+        
+        IMPORTANT: Cette méthode sera wrappée par les décorateurs.
+        Si un décorateur retourne False, can_start() retournera False
+        même si cette méthode de base retourne True.
         """
-        # Si déjà complétée, on ne peut plus la faire
+        # Si déjà complétée, impossible de la refaire
         if self.is_completed(player):
             return False
         
-        # Sinon, la quête de base est toujours disponible
+        # Sinon, la quête de BASE est disponible
+        # (les décorateurs peuvent restreindre davantage)
         return True
 
     def complete(self, player) -> bool:
         """
-        ✅ Complète la quête (applique les récompenses de base)
+        Complète la quête (applique les récompenses de base)
         Retourne True si succès, False si déjà complétée
         """
         # Ne peut pas compléter si déjà complétée

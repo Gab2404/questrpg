@@ -296,7 +296,7 @@ nav button:hover {
     opacity: 0.7;
     color: #e0e0e0;
     line-height: 1;
-    pointer-events: auto; /* ✅ S'assurer que les clics sont détectés */
+    pointer-events: auto;
 }
 
 .btn-icon:hover {
@@ -395,21 +395,24 @@ tr:hover {
 
 .badge-secondary {
     background: transparent;
-    color: #888;
-    border: 1px solid #606060;
+    color: #27ae60;
+    border: 1px solid #27ae60;
 }
 
-/* Quest List */
+/* ===== AMÉLIORATION DE L'AFFICHAGE DES QUÊTES (INSPIRÉ DE LA MAQUETTE) ===== */
+
+/* Container principal des quêtes */
 .quest-list {
     padding: 0;
     margin-top: 1.5rem;
 }
 
+/* Item de quête individuel */
 .quest-item {
     background: transparent;
     backdrop-filter: none;
     border-radius: 0;
-    padding: 1.25rem 1.5rem;
+    padding: 1.75rem 2rem;
     margin-bottom: 0;
     border: none;
     transition: all 0.3s ease;
@@ -437,35 +440,59 @@ tr:hover {
     opacity: 0.6;
 }
 
+/* Header de la quête - aligné comme la maquette */
 .quest-header {
     display: flex;
     justify-content: space-between;
-    align-items: start;
+    align-items: flex-start;
     margin-bottom: 1rem;
 }
 
-.quest-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 0.4rem;
+.quest-header > div:first-child {
+    flex: 1;
 }
 
+/* Titre de la quête - plus grand comme dans la maquette */
+.quest-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+/* Métadonnées de la quête - badges sous le titre */
 .quest-meta {
     display: flex;
     gap: 0.75rem;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #888;
     align-items: center;
+    margin-top: 0.5rem;
 }
 
+/* Description de la quête */
 .quest-description {
     color: #b0b0b0;
     line-height: 1.6;
-    margin-bottom: 0.85rem;
-    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
 }
 
+/* Récompenses - affichage horizontal comme dans la maquette */
+.quest-rewards {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.quest-rewards span {
+    color: #ffd800;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Exigences manquantes */
 .quest-requirements {
     background: rgba(231, 76, 60, 0.1);
     padding: 0.75rem 1rem;
@@ -473,6 +500,11 @@ tr:hover {
     margin: 1rem 0;
     border: 1px solid rgba(231, 76, 60, 0.3);
     color: #e74c3c;
+}
+
+.quest-requirements strong {
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
 .requirement {
@@ -489,6 +521,11 @@ tr:hover {
 
 .requirement.unmet {
     color: #e74c3c;
+}
+
+/* Bouton d'action - espacement comme dans la maquette */
+.quest-item .btn {
+    margin-top: 1rem;
 }
 
 /* ===== Panel Joueur - Stats sans chevauchement ===== */
@@ -710,8 +747,9 @@ textarea.form-input,
 }
 
 .decorator-value {
-    color: #e0e0e0;
+    color: #ffd800;
     font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .modal-actions {
@@ -796,5 +834,23 @@ textarea.form-input,
     th, td {
         padding: 0.75rem 1rem;
         font-size: 0.85rem;
+    }
+    
+    .quest-item {
+        padding: 1.25rem 1.5rem;
+    }
+    
+    .quest-header {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .quest-meta {
+        flex-wrap: wrap;
+    }
+    
+    .quest-rewards {
+        flex-direction: column;
+        gap: 0.5rem;
     }
 }

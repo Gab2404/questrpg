@@ -1,9 +1,9 @@
-// Player Dashboard Logic
+// Player Dashboard Logic - VERSION ORIGINALE (ne pas modifier)
 
 async function loadPlayerStatus() {
     try {
         const status = await api.getPlayerStatus();
-        console.log('📊 Player Status:', status); // ✅ Debug
+        console.log('📊 Player Status:', status);
         displayPlayerStatus(status);
     } catch (error) {
         notify.error('Erreur lors du chargement du statut');
@@ -43,9 +43,8 @@ function displayPlayerStatus(status) {
 async function loadQuests() {
     try {
         const quests = await api.getQuests();
-        console.log('🎯 Quests received:', quests); // ✅ Debug
+        console.log('🎯 Quests received:', quests);
         
-        // ✅ ANALYSE DÉTAILLÉE dans la console
         quests.forEach(q => {
             console.log(`Quest #${q.id} "${q.title}":`, {
                 is_completed: q.is_completed,
@@ -71,7 +70,6 @@ function displayQuests(quests) {
     }
 
     container.innerHTML = quests.map(quest => {
-        // ✅ DEBUG: Afficher l'état exact dans l'interface
         let debugInfo = '';
         if (window.location.search.includes('debug=1')) {
             debugInfo = `
@@ -106,13 +104,13 @@ function displayQuests(quests) {
         let rewardsHTML = '';
         const rewards = [];
         quest.decorators.forEach(dec => {
-            if (dec.type === 'money_reward') rewards.push(`💰 ${dec.value} pièces`);
-            if (dec.type === 'item_reward') rewards.push(`🎁 ${dec.value}`);
+            if (dec.type === 'money_reward') rewards.push(`<span class="decorator-value">💰 ${dec.value} pièces</span>`);
+            if (dec.type === 'item_reward') rewards.push(`<span class="decorator-value">🎁 ${dec.value}</span>`);
         });
         if (rewards.length > 0) {
             rewardsHTML = `
-                <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #f39c12;">
-                    <strong>Récompenses:</strong> ${rewards.join(', ')}
+                <div class="quest-rewards">
+                    ${rewards.join('')}
                 </div>
             `;
         }
@@ -121,15 +119,13 @@ function displayQuests(quests) {
             <div class="quest-item ${quest.is_completed ? 'completed' : quest.can_start ? '' : 'locked'}">
                 <div class="quest-header">
                     <div>
-                        <div class="quest-title">#${quest.id} - ${quest.title}</div>
-                        <div style="margin-top: 0.5rem;">
-                            ${statusBadge}
+                        <div class="quest-title">${quest.title}</div>
+                        <div class="quest-meta">
                             ${typeBadge}
+                            <span>⭐ ${quest.base_xp} XP</span>
                         </div>
                     </div>
-                </div>
-                <div class="quest-meta">
-                    <span>⭐ ${quest.base_xp} XP</span>
+                    ${statusBadge}
                 </div>
                 <div class="quest-description">${quest.description}</div>
                 ${requirementsHTML}
@@ -146,11 +142,11 @@ function displayQuests(quests) {
 }
 
 async function attemptQuest(questId, questTitle) {
-    console.log(`🎮 Attempting quest #${questId}: "${questTitle}"`); // ✅ Debug
+    console.log(`🎮 Attempting quest #${questId}: "${questTitle}"`);
     
     try {
         const result = await api.completeQuest(questId);
-        console.log('✅ Quest result:', result); // ✅ Debug
+        console.log('✅ Quest result:', result);
         
         if (result.success) {
             showQuestCompleteAnimation(questTitle, result.rewards);
@@ -207,7 +203,7 @@ function showQuestCompleteAnimation(questTitle, rewards) {
 async function talkToNPC() {
     try {
         const result = await api.talkToNPC();
-        console.log('💬 Talk to NPC result:', result); // ✅ Debug
+        console.log('💬 Talk to NPC result:', result);
         
         if (result.success) {
             notify.success(result.message);
@@ -225,12 +221,11 @@ async function talkToNPC() {
 document.addEventListener('DOMContentLoaded', async () => {
     if (!auth.requireAuth()) return;
     
-    console.log('🎮 Player Dashboard Loading...'); // ✅ Debug
+    console.log('🎮 Player Dashboard Loading...');
     
     await loadPlayerStatus();
     await loadQuests();
     
-    // Set up event listeners
     const talkNPCBtn = document.getElementById('talkNPCBtn');
     if (talkNPCBtn) {
         talkNPCBtn.addEventListener('click', talkToNPC);
@@ -244,5 +239,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
     
-    console.log('✅ Player Dashboard Ready'); // ✅ Debug
+    console.log('✅ Player Dashboard Ready');
 });
