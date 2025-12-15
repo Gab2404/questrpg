@@ -4,14 +4,14 @@
     "hashed_password": "$2b$12$BF4FX9gnd1ENy9JvLGpyMOLT6aUUieIxnCjUIjHXdG/Y6lGUnoAua",
     "is_admin": true,
     "name": "Héros",
-    "level": 1,
+    "level": 2,
     "xp": 0,
-    "money": 0,
+    "money": 15,
     "inventory": [
+      "Potion",
       "Potion"
     ],
     "spoken_to_npc": true,
-    "completed_quests": [
-    ]
+    "completed_quests": []
   }
 }

@@ -34,16 +34,6 @@ python -m http.server 3000
 
 ---
 
-## 📚 Documentation
-
-- **[QUICKSTART.md](QUICKSTART.md)** - Démarrage en 5 minutes ⚡
-- **[README_WEB.md](README_WEB.md)** - Documentation complète 📖
-- **[MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)** - Migration depuis CLI 🔄
-- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Résolution de problèmes 🔧
-- **[FILES_CHECKLIST.md](FILES_CHECKLIST.md)** - Liste des fichiers 📋
-
----
-
 ## 🎯 Fonctionnalités
 
 ✅ **Backend FastAPI**
@@ -92,31 +82,12 @@ quest-manager-web/
 **Backend**
 - FastAPI
 - Python 3.8+
-- JWT (python-jose)
-- Bcrypt (passlib)
+- JWT
+- Bcrypt
 
 **Frontend**
-- HTML5 / CSS3
-- JavaScript (Vanilla)
-- Fetch API
-
----
-
-## 📦 Scripts Utiles
-
-```bash
-# Démarrer tout (Linux/Mac)
-./start.sh
-
-# Démarrer tout (Windows)
-start.bat
-
-# Arrêter (Linux/Mac)
-./stop.sh
-
-# Arrêter (Windows)
-stop.bat
-```
+- HTML / CSS
+- JavaScript
 
 ---
 
@@ -140,12 +111,6 @@ Une fois le backend lancé : **http://localhost:8000/docs**
 - ⚠️ Changez `SECRET_KEY` dans `.env`
 - ⚠️ Ne commitez JAMAIS `.env`
 - ⚠️ En production : `DEBUG=False`
-
----
-
-## 🐛 Problèmes ?
-
-Consultez [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 
 ---
 
