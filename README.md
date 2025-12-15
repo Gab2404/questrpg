@@ -110,7 +110,6 @@ Une fois le backend lancé : **http://localhost:8000/docs**
 
 - ⚠️ Changez `SECRET_KEY` dans `.env`
 - ⚠️ Ne commitez JAMAIS `.env`
-- ⚠️ En production : `DEBUG=False`
 
 ---
 
